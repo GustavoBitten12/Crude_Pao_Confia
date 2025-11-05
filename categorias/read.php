@@ -4,13 +4,14 @@ include_once '../db.php';
 $database = new Database();
 $db = $database->getConnection();
 
-$query = "SELECT p.*, c.nome as categoria_nome 
-          FROM produtos p 
-          LEFT JOIN categorias c ON p.categoria_id = c.id 
-          ORDER BY p.created_at DESC";
+$query = "SELECT c.*, COUNT(p.id) as total_produtos 
+          FROM categorias c 
+          LEFT JOIN produtos p ON c.id = p.categoria_id 
+          GROUP BY c.id 
+          ORDER BY c.created_at DESC";
 $stmt = $db->prepare($query);
 $stmt->execute();
-$produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$categorias = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos - Padaria Pão e Confia</title>
+    <title>Categorias - Padaria Pão e Confia</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -28,8 +29,8 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <nav>
                 <ul>
                     <li><a href="../index.php">Início</a></li>
-                    <li><a href="read.php">Produtos</a></li>
-                    <li><a href="../categorias/read.php">Categorias</a></li>
+                    <li><a href="../produtos/read.php">Produtos</a></li>
+                    <li><a href="read.php">Categorias</a></li>
                 </ul>
             </nav>
         </div>
@@ -44,8 +45,8 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="table-container">
             <div class="table-header">
-                <h2>Lista de Produtos</h2>
-                <a href="create.php" class="btn">Novo Produto</a>
+                <h2>Lista de Categorias</h2>
+                <a href="create.php" class="btn">Nova Categoria</a>
             </div>
             
             <table>
@@ -54,32 +55,30 @@ $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Descrição</th>
-                        <th>Preço</th>
-                        <th>Categoria</th>
-                        <th>Estoque</th>
+                        <th>Total de Produtos</th>
+                        <th>Data de Criação</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (count($produtos) > 0): ?>
-                        <?php foreach ($produtos as $produto): ?>
+                    <?php if (count($categorias) > 0): ?>
+                        <?php foreach ($categorias as $categoria): ?>
                             <tr>
-                                <td><?php echo $produto['id']; ?></td>
-                                <td><?php echo htmlspecialchars($produto['nome']); ?></td>
-                                <td><?php echo htmlspecialchars($produto['descricao']); ?></td>
-                                <td>R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></td>
-                                <td><?php echo htmlspecialchars($produto['categoria_nome']); ?></td>
-                                <td><?php echo $produto['estoque']; ?></td>
+                                <td><?php echo $categoria['id']; ?></td>
+                                <td><?php echo htmlspecialchars($categoria['nome']); ?></td>
+                                <td><?php echo htmlspecialchars($categoria['descricao']); ?></td>
+                                <td><?php echo $categoria['total_produtos']; ?></td>
+                                <td><?php echo date('d/m/Y H:i', strtotime($categoria['created_at'])); ?></td>
                                 <td class="actions">
-                                    <a href="update.php?id=<?php echo $produto['id']; ?>" class="btn">Editar</a>
-                                    <a href="delete.php?id=<?php echo $produto['id']; ?>" class="btn btn-danger" 
-                                       onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
+                                    <a href="update.php?id=<?php echo $categoria['id']; ?>" class="btn">Editar</a>
+                                    <a href="delete.php?id=<?php echo $categoria['id']; ?>" class="btn btn-danger" 
+                                       onclick="return confirm('Tem certeza que deseja excluir esta categoria?')">Excluir</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7" style="text-align: center;">Nenhum produto encontrado</td>
+                            <td colspan="6" style="text-align: center;">Nenhuma categoria encontrada</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>

@@ -6,34 +6,23 @@ if ($_POST) {
         $database = new Database();
         $db = $database->getConnection();
         
-        $query = "INSERT INTO produtos SET nome=:nome, descricao=:descricao, preco=:preco, categoria_id=:categoria_id, estoque=:estoque";
+        $query = "INSERT INTO categorias SET nome=:nome, descricao=:descricao";
         $stmt = $db->prepare($query);
         
         $nome = htmlspecialchars(strip_tags($_POST['nome']));
         $descricao = htmlspecialchars(strip_tags($_POST['descricao']));
-        $preco = htmlspecialchars(strip_tags($_POST['preco']));
-        $categoria_id = htmlspecialchars(strip_tags($_POST['categoria_id']));
-        $estoque = htmlspecialchars(strip_tags($_POST['estoque']));
         
         $stmt->bindParam(":nome", $nome);
         $stmt->bindParam(":descricao", $descricao);
-        $stmt->bindParam(":preco", $preco);
-        $stmt->bindParam(":categoria_id", $categoria_id);
-        $stmt->bindParam(":estoque", $estoque);
         
         if ($stmt->execute()) {
-            header("Location: read.php?message=Produto criado com sucesso");
+            header("Location: read.php?message=Categoria criada com sucesso");
             exit();
         }
     } catch(PDOException $exception) {
         echo "Erro: " . $exception->getMessage();
     }
 }
-
-// Buscar categorias para o select
-$database = new Database();
-$db = $database->getConnection();
-$categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -41,7 +30,7 @@ $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criar Produto - Padaria Pão e Confia</title>
+    <title>Criar Categoria - Padaria Pão e Confia</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
@@ -51,8 +40,8 @@ $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC)
             <nav>
                 <ul>
                     <li><a href="../index.php">Início</a></li>
-                    <li><a href="read.php">Produtos</a></li>
-                    <li><a href="../categorias/read.php">Categorias</a></li>
+                    <li><a href="../produtos/read.php">Produtos</a></li>
+                    <li><a href="read.php">Categorias</a></li>
                 </ul>
             </nav>
         </div>
@@ -60,11 +49,11 @@ $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC)
 
     <main class="container">
         <div class="form-container">
-            <h2>Criar Novo Produto</h2>
+            <h2>Criar Nova Categoria</h2>
             
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group">
-                    <label for="nome">Nome do Produto</label>
+                    <label for="nome">Nome da Categoria</label>
                     <input type="text" id="nome" name="nome" required maxlength="100">
                 </div>
                 
@@ -73,31 +62,9 @@ $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC)
                     <textarea id="descricao" name="descricao" rows="3" maxlength="500"></textarea>
                 </div>
                 
-                <div class="form-group">
-                    <label for="preco">Preço (R$)</label>
-                    <input type="number" id="preco" name="preco" step="0.01" min="0" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="categoria_id">Categoria</label>
-                    <select id="categoria_id" name="categoria_id" required>
-                        <option value="">Selecione uma categoria</option>
-                        <?php foreach ($categorias as $categoria): ?>
-                            <option value="<?php echo $categoria['id']; ?>">
-                                <?php echo htmlspecialchars($categoria['nome']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="estoque">Estoque</label>
-                    <input type="number" id="estoque" name="estoque" min="0" required>
-                </div>
-                
                 <div class="form-actions">
                     <a href="read.php" class="btn btn-secondary">Cancelar</a>
-                    <button type="submit" class="btn btn-success">Criar Produto</button>
+                    <button type="submit" class="btn btn-success">Criar Categoria</button>
                 </div>
             </form>
         </div>

@@ -2,8 +2,8 @@
 class Database {
     private $host = "localhost";
     private $db_name = "padaria_pao_confia";
-    private $username = "root";
-    private $password = "";
+    private $username = "seu_usuario";
+    private $password = "sua_senha";
     public $conn;
 
     public function getConnection() {
