@@ -33,7 +33,7 @@ if ($_POST) {
     }
 }
 
-// Buscar dados do produto
+
 $query = "SELECT * FROM produtos WHERE id = ?";
 $stmt = $db->prepare($query);
 $stmt->bindParam(1, $id);
@@ -44,7 +44,7 @@ if (!$produto) {
     die("Produto não encontrado");
 }
 
-// Buscar categorias
+
 $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 

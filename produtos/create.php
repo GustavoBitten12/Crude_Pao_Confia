@@ -30,7 +30,7 @@ if ($_POST) {
     }
 }
 
-// Buscar categorias para o select
+
 $database = new Database();
 $db = $database->getConnection();
 $categorias = $db->query("SELECT * FROM categorias")->fetchAll(PDO::FETCH_ASSOC);

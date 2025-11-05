@@ -27,7 +27,7 @@ if ($_POST) {
     }
 }
 
-// Buscar dados da categoria
+
 $query = "SELECT * FROM categorias WHERE id = ?";
 $stmt = $db->prepare($query);
 $stmt->bindParam(1, $id);

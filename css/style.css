@@ -17,7 +17,7 @@ body {
     padding: 0 20px;
 }
 
-/* Header */
+
 header {
     background: linear-gradient(135deg, #8B4513, #D2691E);
     color: white;
@@ -55,7 +55,7 @@ nav ul li a:hover {
     color: #FFD700;
 }
 
-/* Main Content */
+
 main {
     padding: 2rem 0;
     min-height: calc(100vh - 140px);
@@ -92,7 +92,7 @@ main {
     margin-bottom: 1rem;
 }
 
-/* Buttons */
+
 .btn {
     display: inline-block;
     background: #8B4513;
@@ -134,7 +134,7 @@ main {
     background: #545b62;
 }
 
-/* Tables */
+
 .table-container {
     background: white;
     border-radius: 10px;
@@ -177,7 +177,7 @@ tr:hover {
     gap: 0.5rem;
 }
 
-/* Forms */
+
 .form-container {
     background: white;
     padding: 2rem;
@@ -219,7 +219,7 @@ input:focus, select:focus, textarea:focus {
     margin-top: 2rem;
 }
 
-/* Alerts */
+
 .alert {
     padding: 1rem;
     border-radius: 5px;
@@ -238,7 +238,7 @@ input:focus, select:focus, textarea:focus {
     border: 1px solid #f5c6cb;
 }
 
-/* Footer */
+
 footer {
     background: #343a40;
     color: white;
@@ -247,7 +247,7 @@ footer {
     margin-top: 2rem;
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     header .container {
         flex-direction: column;

@@ -7,7 +7,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 try {
-    // Verificar se existem produtos vinculados à categoria
+    
     $check_query = "SELECT COUNT(*) as total FROM produtos WHERE categoria_id = ?";
     $check_stmt = $db->prepare($check_query);
     $check_stmt->bindParam(1, $id);
